@@ -1,0 +1,51 @@
+apiVersion: enterprisekgateway.solo.io/v1alpha1
+kind: EnterpriseKgatewayParameters
+metadata:
+  name: shared-ent-kgateway-parameters
+  namespace: kgateway-system
+spec:
+  # # dedicatedExtensions: {}
+  kube:
+    deployment:
+      replicas: 1
+    envoyContainer:
+      bootstrap:
+        logLevel: info
+      env:
+      - name: OTEL_RESOURCE_ATTRIBUTES
+        value: "environment=detector,resource=attribute"
+      # image:
+      #   # digest:
+      #   pullPolicy: IfNotPresent
+      #   registry: docker.io
+      #   repository: duncandoyle/envoy-wrapper
+      #   tag: 2.1.0-beta.2
+    sharedExtensions:
+      extCache:
+        enabled: true
+        # container:
+        #   image:
+        #     # digest:
+        #     pullPolicy: IfNotPresent
+        #     registry: docker.io
+        #     repository: duncandoyle/redis
+        #     tag: 7.2.4-alpine
+      extauth:
+        enabled: true
+        # container:
+        #   image:
+        #     # digest:
+        #     pullPolicy: IfNotPresent
+        #     registry: docker.io
+        #     repository: duncandoyle/ext-auth-service
+        #     tag: 0.71.4
+        replicas: 1
+      ratelimiter:
+        enabled: true
+        # container:
+        #   image:
+        #     # digest:
+        #     pullPolicy: IfNotPresent
+        #     registry: docker.io
+        #     repository: duncandoyle/rate-limiter
+        #     tag: 0.16.4
