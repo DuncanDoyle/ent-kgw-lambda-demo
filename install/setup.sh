@@ -1,4 +1,5 @@
 #!/bin/sh
+: "${AWS_ACCOUNT_ID:?AWS_ACCOUNT_ID must be set}"
 
 pushd ..
 
@@ -20,7 +21,7 @@ kubectl label namespaces default --overwrite shared-gateway-access="true"
 
 # Deploy the Lambda Backend
 printf "\nDeploy Lambda Backend ...\n"
-kubectl apply -f backends/lambda-backend.yaml
+envsubst '${AWS_ACCOUNT_ID}' < backends/lambda-backend.yaml | kubectl apply -f -
 
 # HTTPRoute
 printf "\nDeploy HTTPRoute ...\n"
